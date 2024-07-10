@@ -1,0 +1,4 @@
+<div class="container">
+    <input type="checkbox"[(ngModel)]="todo.completed" id="{{todo.id}}">
+    <label for="{{todo.id}}" [style.textDecoration]="todo.completed ? 'line-through' : 'none'">{{ todo.name }}</label>
+</div>

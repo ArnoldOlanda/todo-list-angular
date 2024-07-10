@@ -1,9 +1,6 @@
 <div>
-    <p>todo-list component: {{completed()}} completada(s)</p>
+    <h1>TODO LIST: {{completed}} completed</h1>
     @for (todo of todos(); track todo) {
-        <div>
-            <input type="checkbox" [(value)]="todo.completed" (change)="onChange($event,todo.id)">
-            <span [style.textDecoration]="todo.completed ? 'line-through' : 'none'">{{ todo.name }}</span>
-        </div>
+        <app-todo-item [todo]="todo" />
     }
 </div>
