@@ -1,5 +1,14 @@
 <div>
     <h1>TODO LIST: {{completed}} completed</h1>
+    <div class="input-container">
+        <input 
+            class="input" 
+            type="text" 
+            [(ngModel)]="newTodo"
+            (keydown.enter)="add()"
+        >
+        <button (click)="add()">Add</button>
+    </div>
     @for (todo of todos(); track todo) {
         <app-todo-item [todo]="todo" />
     }

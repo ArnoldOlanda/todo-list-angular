@@ -1,27 +1,39 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { todos } from './data';
+import { Todo } from './models/todo.model';
 import { TodoItemComponent } from './components/todo-item/todo-item.component';
 
 @Component({
   selector: 'todo-list',
   standalone: true,
-  imports: [TodoItemComponent],
+  imports: [TodoItemComponent, FormsModule],
   templateUrl: './todo-list.component.html',
-  styleUrl: './todo-list.component.scss'
+  styleUrl: './todo-list.component.scss',
 })
 export class TodoListComponent {
-  todos = signal([
-    { id:1, name: 'Learn Angular', completed: false },
-    { id:2,name: 'Learn Angular CLI', completed: false },
-    { id:3,name: 'Learn Angular Material', completed: false },
-    { id:4,name: 'Learn Angular Flex-Layout', completed: false },
-    { id:5,name: 'Learn Angular Animations', completed: true },
-  ])
+  todos = signal<Todo[]>(todos);
+  newTodo = signal<string>('');
 
-  get completed():number{
-    return this.todos().filter(todo => todo.completed).length
+  get completed(): number {
+    return this.todos().filter((todo) => todo.completed).length;
   }
 
-  toggle = (id: number) => {
-    this.todos.update(()=>this.todos().map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo))
-  }
+  public toggle(id: number) {
+    this.todos.update((todos) =>
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  public add() {
+    if (this.newTodo()) {
+      this.todos.update((todos) => [
+        ...todos,
+        { id: todos.length + 1, name: this.newTodo(), completed: false },
+      ]);
+      this.newTodo.update(() => '');
+    }
+  };
 }
